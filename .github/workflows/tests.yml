@@ -18,24 +18,15 @@ jobs:
           - 1.x
         os:
           - ubuntu-latest
-          - windows-latest
-          - macos-latest
     runs-on: ${{ matrix.os }}
     steps:
       - name: Install Go
         uses: actions/setup-go@v2
         with:
           go-version: ${{ matrix.go-version }}
-      - name: Set git to turn off auto-converting line endings
-        run: git config --global core.autocrlf false
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Test (not on Windows)
+      - name: Test
         run: go test -coverprofile=coverage.txt -covermode=atomic ./...
-        if: runner.os != 'Windows'
-      - name: Test (on Windows)
-        run: go test -coverprofile=coverage.txt -covermode=atomic ./...
-        shell: cmd
-        if: runner.os == 'Windows'
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
