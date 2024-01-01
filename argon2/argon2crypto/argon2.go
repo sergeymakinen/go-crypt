@@ -1,6 +1,6 @@
-// Derived from Go which is licensed as follows:
+// Derived from Go supplementary cryptography libraries which is licensed as follows:
 //
-// Copyright (c) 2009 The Go Authors. All rights reserved.
+// Copyright 2017 The Go Authors. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -52,7 +52,7 @@ const (
 // Key derives a key from the password, salt, and cost parameters using Argon2*
 // returning a byte slice of length keyLen that can be used as cryptographic key.
 func Key(mode, version int, password, salt []byte, time, memory uint32, threads uint8, keyLen uint32) []byte {
-	h0 := initHash(password, salt, time, memory, uint32(threads), keyLen, mode, version)
+	h0 := initHash(password, salt, nil, nil, time, memory, uint32(threads), keyLen, mode, version)
 	memory = memory / (syncPoints * uint32(threads)) * (syncPoints * uint32(threads))
 	if memory < 2*syncPoints*uint32(threads) {
 		memory = 2 * syncPoints * uint32(threads)
@@ -69,7 +69,7 @@ const (
 
 type block [blockLength]uint64
 
-func initHash(password, salt []byte, time, memory, threads, keyLen uint32, mode, version int) [blake2b.Size + 8]byte {
+func initHash(password, salt, key, data []byte, time, memory, threads, keyLen uint32, mode, version int) [blake2b.Size + 8]byte {
 	var (
 		h0     [blake2b.Size + 8]byte
 		params [24]byte
@@ -90,9 +90,12 @@ func initHash(password, salt []byte, time, memory, threads, keyLen uint32, mode,
 	binary.LittleEndian.PutUint32(tmp[:], uint32(len(salt)))
 	b2.Write(tmp[:])
 	b2.Write(salt)
-	binary.LittleEndian.PutUint32(tmp[:], 0)
+	binary.LittleEndian.PutUint32(tmp[:], uint32(len(key)))
 	b2.Write(tmp[:])
+	b2.Write(key)
+	binary.LittleEndian.PutUint32(tmp[:], uint32(len(data)))
 	b2.Write(tmp[:])
+	b2.Write(data)
 	b2.Sum(h0[:0])
 	return h0
 }
