@@ -1,12 +1,11 @@
 # crypt
 
-[![Test](https://github.com/sergeymakinen/go-crypt/actions/workflows/test.yml/badge.svg)](https://github.com/sergeymakinen/go-crypt/actions/workflows/test.yml)
+[![tests](https://github.com/sergeymakinen/go-crypt/workflows/tests/badge.svg)](https://github.com/sergeymakinen/go-crypt/actions?query=workflow%3Atests)
 [![Go Reference](https://pkg.go.dev/badge/github.com/sergeymakinen/go-crypt.svg)](https://pkg.go.dev/github.com/sergeymakinen/go-crypt)
 [![Go Report Card](https://goreportcard.com/badge/github.com/sergeymakinen/go-crypt)](https://goreportcard.com/report/github.com/sergeymakinen/go-crypt)
 [![codecov](https://codecov.io/gh/sergeymakinen/go-crypt/branch/main/graph/badge.svg)](https://codecov.io/gh/sergeymakinen/go-crypt)
 
-Package crypt implements a basic interface to
-validate [crypt(3)](https://en.wikipedia.org/wiki/Crypt_(C)#Key_derivation_functions_supported_by_crypt) hashes.
+Package crypt implements a basic interface to validate [crypt(3)](https://en.wikipedia.org/wiki/Crypt_(C)#Key_derivation_functions_supported_by_crypt) hashes.
 
 Validation of any particular hash requires the prior registration of a check function.
 Registration is typically automatic as a side effect of initializing that
@@ -146,8 +145,7 @@ initialization side effects.
 
 ## Custom hashes
 
-It's also possible to implement a custom hash marshaling/unmarshaling via
-the <a href="https://pkg.go.dev/github.com/sergeymakinen/go-crypt/hash">hash</a> package.
+It's also possible to implement a custom hash marshaling/unmarshaling via the <a href="https://pkg.go.dev/github.com/sergeymakinen/go-crypt/hash">hash</a> package.
 
 **Supported schemes**:
 
@@ -155,17 +153,17 @@ the <a href="https://pkg.go.dev/github.com/sergeymakinen/go-crypt/hash">hash</a>
 - DES Extended (BSDi): `_<value>(<value>)*`
 - MCF/PHC: `$<id>$fragment($<fragment>)*`<br>
   Where:
-    - `<fragment>` is `(<group>|<param>=<value>|<value>)`
-    - `<group>` is `<param>=<value>,<param>=<value>(,<param>=<value>)*`
-
+  - `<fragment>` is `(<group>|<param>=<value>|<value>)`
+  - `<group>` is `<param>=<value>,<param>=<value>(,<param>=<value>)*`
+    
 **Example**:
 
 ```go
 var scheme = struct {
-HashPrefix string
-Cost       string `hash:"length:2"`
-Salt       []byte   `hash:"length:22,inline"`
-Sum        [31]byte
+    HashPrefix string
+    Cost       string `hash:"length:2"`
+    Salt       []byte   `hash:"length:22,inline"`
+    Sum        [31]byte
 }
 hash.Unmarshal("$2b$10$UVjcf7m8L91VOpIRwEprguF4o9Inqj7aNhqvSzUElX4GWGyIkYLuG", &scheme)
 ```
