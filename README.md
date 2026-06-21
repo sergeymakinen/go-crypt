@@ -1,6 +1,6 @@
 # crypt
 
-[![tests](https://github.com/sergeymakinen/go-crypt/workflows/tests/badge.svg)](https://github.com/sergeymakinen/go-crypt/actions?query=workflow%3Atests)
+[![Test](https://github.com/sergeymakinen/go-crypt/actions/workflows/test.yml/badge.svg)](https://github.com/sergeymakinen/go-crypt/actions/workflows/test.yml)
 [![Go Reference](https://pkg.go.dev/badge/github.com/sergeymakinen/go-crypt.svg)](https://pkg.go.dev/github.com/sergeymakinen/go-crypt)
 [![Go Report Card](https://goreportcard.com/badge/github.com/sergeymakinen/go-crypt)](https://goreportcard.com/report/github.com/sergeymakinen/go-crypt)
 [![codecov](https://codecov.io/gh/sergeymakinen/go-crypt/branch/main/graph/badge.svg)](https://codecov.io/gh/sergeymakinen/go-crypt)
@@ -155,7 +155,7 @@ It's also possible to implement a custom hash marshaling/unmarshaling via the <a
   Where:
   - `<fragment>` is `(<group>|<param>=<value>|<value>)`
   - `<group>` is `<param>=<value>,<param>=<value>(,<param>=<value>)*`
-    
+
 **Example**:
 
 ```go
